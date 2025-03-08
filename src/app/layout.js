@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Sentinal - Advanced AI Security & Red Teaming",
-  description: "Proactively detect and mitigate AI security threats with our cutting-edge red teaming platform. Protect your AI models before attackers exploit them.",
+  title: "Sentinel XAI - Advanced AI Security & Red Teaming",
+  description: "Secure your AI models with advanced red teaming, vulnerability detection, and continuous security monitoring.",
   keywords: "AI security, red teaming, AI vulnerability, model security, cybersecurity, prompt injection",
 };
 

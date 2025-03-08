@@ -35,35 +35,19 @@ export default function Navbar() {
           <Link href="/" className="flex items-center space-x-2">
             <Shield className="h-8 w-8 text-purple-500" />
             <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-              Sentinal
+              Sentinel XAI
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center">
             <Link
-              href="/"
-              className="text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              Home
-            </Link>
-            <Link
-              href="/product"
-              className="text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              Product
-            </Link>
-            <Link
-              href="/insights"
-              className="text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              Insights
-            </Link>
-            <Link
-              href="/demo"
+              href="https://sentinelxai.streamlit.app/"
               className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-4 py-2 rounded-md flex items-center group transition-all duration-200"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <span>Get a Demo</span>
+              <span>Try Playground</span>
               <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
             </Link>
           </nav>
@@ -87,32 +71,13 @@ export default function Navbar() {
         <div className="md:hidden bg-gray-900/95 backdrop-blur-md shadow-xl">
           <div className="container mx-auto px-4 py-4 space-y-4">
             <Link
-              href="/"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800/50 px-3 py-2 rounded-md transition-colors duration-200"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              href="/product"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800/50 px-3 py-2 rounded-md transition-colors duration-200"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Product
-            </Link>
-            <Link
-              href="/insights"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800/50 px-3 py-2 rounded-md transition-colors duration-200"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Insights
-            </Link>
-            <Link
-              href="/demo"
+              href="https://sentinelxai.streamlit.app/"
               className="block bg-gradient-to-r from-purple-500 to-blue-500 text-white px-3 py-2 rounded-md"
               onClick={() => setIsMobileMenuOpen(false)}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Get a Demo
+              Try Playground
             </Link>
           </div>
         </div>

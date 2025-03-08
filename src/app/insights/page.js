@@ -5,8 +5,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata = {
-  title: "Sentinal - AI Security Insights & Research",
-  description: "Stay informed about the latest AI security threats, research, and best practices. Learn how to protect your AI models from vulnerabilities.",
+  title: "Sentinel XAI - AI Security Insights & Research",
+  description: "Stay updated with the latest AI security research and insights.",
 };
 
 const featuredArticles = [
@@ -223,7 +223,7 @@ export default function InsightsPage() {
                       <div className="flex items-center text-sm text-gray-500 mb-4">
                         <div className="flex items-center mr-4">
                           <User className="h-4 w-4 mr-1" />
-                          <span>Sentinal Research Team</span>
+                          <span>Sentinel XAI Research Team</span>
                         </div>
                         <div className="flex items-center">
                           <Calendar className="h-4 w-4 mr-1" />

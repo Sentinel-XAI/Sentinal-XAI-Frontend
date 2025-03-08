@@ -1,14 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { Shield, ServerCrash, Lock, Activity, ChevronRight, Check } from "lucide-react";
 import HeroAnimation from "@/components/home/HeroAnimation";
+import ScrollingCompanies from "@/components/home/ScrollingCompanies";
+import DemoForm from "@/components/home/DemoForm";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export default function Home() {
+  const [showDemoForm, setShowDemoForm] = useState(false);
+
   return (
     <>
       <Navbar />
+      {showDemoForm && <DemoForm onClose={() => setShowDemoForm(false)} />}
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center">
@@ -31,13 +39,29 @@ export default function Home() {
               
               <div className="flex justify-center">
                 <Link 
-                  href="/demo"
+                  href="https://sentinelxai.streamlit.app/"
                   className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 text-lg"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  Get in touch
+                  Try Playground
                 </Link>
               </div>
             </div>
+          </div>
+        </section>
+        
+        {/* Companies Using Section */}
+        <section className="py-24 bg-gradient-to-b from-gray-900 to-gray-950 overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Already Trusted By</h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Leading companies securing their AI with our platform
+              </p>
+            </div>
+            
+            <ScrollingCompanies />
           </div>
         </section>
         
@@ -45,7 +69,7 @@ export default function Home() {
         <section className="py-24 bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Sentinal?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Sentinel XAI?</h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                 Our cutting-edge platform keeps your AI models secure from evolving threats
               </p>
@@ -81,27 +105,6 @@ export default function Home() {
                   Works with your existing AI models, no extra effort required. Deploy in minutes, not months.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Trusted By Section */}
-        <section className="py-24 bg-gradient-to-b from-gray-900 to-gray-950">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by Industry Leaders</h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Companies across industries rely on our platform to secure their AI systems
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center items-center">
-              {/* Client logos - placeholders for now */}
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-40 h-20 bg-gray-800/50 rounded-lg flex items-center justify-center">
-                  <div className="text-lg font-semibold text-gray-500">LOGO {i}</div>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -214,15 +217,15 @@ export default function Home() {
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to secure your AI systems?</h2>
               <p className="text-xl text-gray-200 mb-8">
-                Get a personalized security audit and discover how Sentinal can protect your AI models.
+                Get a personalized security audit and discover how Sentinel XAI can protect your AI models.
               </p>
-              <Link 
-                href="/demo"
+              <button 
+                onClick={() => setShowDemoForm(true)}
                 className="bg-white text-gray-900 hover:bg-gray-100 px-8 py-4 rounded-lg font-medium inline-flex items-center group transition-colors duration-300"
               >
                 <span>Request a Demo Today</span>
                 <ChevronRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
+              </button>
             </div>
           </div>
         </section>

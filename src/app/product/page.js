@@ -5,8 +5,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata = {
-  title: "Sentinal - AI Security Platform & Features",
-  description: "Explore our cutting-edge AI security platform that detects vulnerabilities before attackers do. Features include red teaming, continuous monitoring, and jailbreak prevention.",
+  title: "Sentinel XAI - AI Security Platform & Features",
+  description: "Secure your AI models with advanced red teaming and continuous security monitoring.",
 };
 
 export default function ProductPage() {
@@ -22,7 +22,7 @@ export default function ProductPage() {
                 Secure Your AI. <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Prevent Exploits.</span>
               </h1>
               <p className="text-xl text-gray-300 mb-12 leading-relaxed">
-                Sentinal provides comprehensive security testing and monitoring for AI systems. Our platform identifies vulnerabilities before attackers can exploit them.
+                Sentinel XAI provides comprehensive security testing and monitoring for AI systems. Our platform identifies vulnerabilities before attackers can exploit them.
               </p>
             </div>
           </div>
@@ -321,8 +321,8 @@ export default function ProductPage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Secure Your AI?</h2>
-              <p className="text-xl text-gray-300 mb-8">
-                Schedule a personalized demo to see how Sentinal can protect your AI systems from emerging threats.
+              <p className="text-xl text-gray-200 mb-8">
+                Schedule a personalized demo to see how Sentinel XAI can protect your AI systems from emerging threats.
               </p>
               <Link
                 href="/demo"

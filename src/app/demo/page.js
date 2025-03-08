@@ -366,12 +366,12 @@ export default function DemoPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {[
                   {
-                    quote: "The security audit revealed critical vulnerabilities in our AI model that we had completely overlooked. Sentinal's team provided clear and actionable steps to address them.",
+                    quote: "The security audit revealed critical vulnerabilities in our AI model that we had completely overlooked. Sentinel XAI's team provided clear and actionable steps to address them.",
                     author: "Alex Chen",
                     role: "CTO, TechVision AI",
                   },
                   {
-                    quote: "Implementing Sentinal's security recommendations has saved us from multiple potential attacks. Their continuous monitoring gives us peace of mind.",
+                    quote: "Implementing Sentinel XAI's security recommendations has saved us from multiple potential attacks. Their continuous monitoring gives us peace of mind.",
                     author: "Samantha Lee",
                     role: "Head of AI Security, DataForge",
                   },
