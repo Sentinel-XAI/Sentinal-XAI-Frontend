@@ -1,31 +1,37 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import Sidebar from "@/components/sidebar";
+import Navbar from "@/components/navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+export const fontSans = FontSans({
   subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
+  variable: "--font-sans",
 });
 
 export const metadata = {
-  title: "Sentinel XAI - Advanced AI Security & Red Teaming",
-  description: "Secure your AI models with advanced red teaming, vulnerability detection, and continuous security monitoring.",
-  keywords: "AI security, red teaming, AI vulnerability, model security, cybersecurity, prompt injection",
+  title: "Dashboard - Sentinel XAI",
+  description: "A modern dashboard built with Next.js and Tailwind CSS",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning className={fontSans.variable}>
+      <body className="bg-background min-h-screen">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex min-h-screen flex-col lg:flex-row">
+            <Sidebar />
+            <div className="flex flex-1 flex-col">
+              <Navbar />
+              <main className="flex-1 p-4 md:p-6">{children}</main>
+            </div>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
