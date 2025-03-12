@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -36,6 +36,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { TableSkeleton } from "@/components/ui/skeleton";
 
 // Types
 interface LogEntry {
@@ -79,12 +80,26 @@ const projects = ["All Projects", "Project A", "Project B", "Project C"];
 export default function LogsPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [selectedProject, setSelectedProject] = useState("All Projects");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+
+  useEffect(() => {
+    // Simulate initial data loading
+    const timer = setTimeout(() => {
+      setLogs(sampleLogs);
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleUpdate = () => {
     setIsLoading(true);
     // Simulate data refresh
-    setTimeout(() => setIsLoading(false), 1000);
+    setTimeout(() => {
+      setLogs(sampleLogs);
+      setIsLoading(false);
+    }, 1000);
   };
 
   const handleMisclassification = () => {
@@ -128,8 +143,20 @@ export default function LogsPage() {
               {date ? format(date, "PPP") : "Pick a date"}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className="w-auto p-0">
             <Calendar
+              className="custom-calendar"
+              classNames={{
+                months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                month: "space-y-4",
+                caption: "flex justify-center pt-1 relative items-center",
+                caption_label: "text-sm font-medium",
+                nav: "space-x-1 flex items-center",
+                nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+                nav_button_previous: "absolute left-1",
+                nav_button_next: "absolute right-1",
+                table: "w-full border-collapse space-y-1",
+              }}
               mode="single"
               selected={date}
               onSelect={setDate}
@@ -140,70 +167,74 @@ export default function LogsPage() {
       </div>
 
       {/* Logs Table */}
-      <div className="rounded-lg border shadow-sm">
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  <Clock className="mr-2 h-4 w-4 inline-block" />
-                  Timestamp
-                </TableHead>
-                <TableHead>
-                  <FileText className="mr-2 h-4 w-4 inline-block" />
-                  Threats
-                </TableHead>
-                <TableHead className="max-w-[300px]">
-                  <FileText className="mr-2 h-4 w-4 inline-block" />
-                  Content
-                </TableHead>
-                <TableHead>
-                  <PolicyIcon className="mr-2 h-4 w-4 inline-block" />
-                  Policy
-                </TableHead>
-                <TableHead>
-                  <Hash className="mr-2 h-4 w-4 inline-block" />
-                  Request ID
-                </TableHead>
-                <TableHead className="text-right">
-                  <Zap className="mr-2 h-4 w-4 inline-block" />
-                  Latency
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sampleLogs.map((log) => (
-                <TableRow key={log.id}>
-                  <TableCell className="whitespace-nowrap">
-                    {format(new Date(log.timestamp), "MMM d, HH:mm:ss")}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        log.threatsDetected === "Prompt Attack"
-                          ? "destructive"
-                          : "success"
-                      }
-                    >
-                      {log.threatsDetected}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="max-w-[300px] truncate">
-                    {log.content}
-                  </TableCell>
-                  <TableCell>{log.policy}</TableCell>
-                  <TableCell className="font-mono text-sm">
-                    {log.requestId}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {log.latency}ms
-                  </TableCell>
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <div className="rounded-lg border shadow-sm">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    <Clock className="mr-2 h-4 w-4 inline-block" />
+                    Timestamp
+                  </TableHead>
+                  <TableHead>
+                    <FileText className="mr-2 h-4 w-4 inline-block" />
+                    Threats
+                  </TableHead>
+                  <TableHead className="max-w-[300px]">
+                    <FileText className="mr-2 h-4 w-4 inline-block" />
+                    Content
+                  </TableHead>
+                  <TableHead>
+                    <PolicyIcon className="mr-2 h-4 w-4 inline-block" />
+                    Policy
+                  </TableHead>
+                  <TableHead>
+                    <Hash className="mr-2 h-4 w-4 inline-block" />
+                    Request ID
+                  </TableHead>
+                  <TableHead className="text-right">
+                    <Zap className="mr-2 h-4 w-4 inline-block" />
+                    Latency
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {logs.map((log) => (
+                  <TableRow key={log.id}>
+                    <TableCell className="whitespace-nowrap">
+                      {format(new Date(log.timestamp), "MMM d, HH:mm:ss")}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          log.threatsDetected === "Prompt Attack"
+                            ? "destructive"
+                            : "success"
+                        }
+                      >
+                        {log.threatsDetected}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="max-w-[300px] truncate">
+                      {log.content}
+                    </TableCell>
+                    <TableCell>{log.policy}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {log.requestId}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {log.latency}ms
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 } 

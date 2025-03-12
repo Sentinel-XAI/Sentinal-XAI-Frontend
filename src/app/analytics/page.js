@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -24,6 +24,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { CardSkeleton, ChartSkeleton } from "@/components/ui/skeleton";
 
 // Sample data - replace with real data from your API
 const threatData = {
@@ -48,12 +49,26 @@ const threatData = {
 
 export default function AnalyticsPage() {
   const [date, setDate] = useState(new Date());
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Simulate initial data loading
+    const timer = setTimeout(() => {
+      setData(threatData);
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleUpdate = () => {
     setIsLoading(true);
     // Simulate data refresh
-    setTimeout(() => setIsLoading(false), 1000);
+    setTimeout(() => {
+      setData(threatData);
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
@@ -96,132 +111,158 @@ export default function AnalyticsPage() {
 
       {/* Analytics Overview Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-muted-foreground">
-              Number of Requests
-            </p>
-            <h3 className="text-2xl font-bold">{threatData.requests}</h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Last 24 hours
-            </p>
-          </div>
-        </div>
+        {isLoading ? (
+          <>
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+          </>
+        ) : (
+          <>
+            <div className="rounded-lg border bg-card p-6 shadow-sm">
+              <div className="flex flex-col">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Number of Requests
+                </p>
+                <h3 className="text-2xl font-bold">{data.requests}</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Last 24 hours
+                </p>
+              </div>
+            </div>
 
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-muted-foreground">
-              Threats Detected
-            </p>
-            <h3 className="text-2xl font-bold">{threatData.threatsDetected}</h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Across all categories
-            </p>
-          </div>
-        </div>
+            <div className="rounded-lg border bg-card p-6 shadow-sm">
+              <div className="flex flex-col">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Threats Detected
+                </p>
+                <h3 className="text-2xl font-bold">{data.threatsDetected}</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Across all categories
+                </p>
+              </div>
+            </div>
 
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-muted-foreground">
-              Detection Rate
-            </p>
-            <h3 className="text-2xl font-bold">{threatData.detectionRate}%</h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Per request
-            </p>
-          </div>
-        </div>
+            <div className="rounded-lg border bg-card p-6 shadow-sm">
+              <div className="flex flex-col">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Detection Rate
+                </p>
+                <h3 className="text-2xl font-bold">{data.detectionRate}%</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Per request
+                </p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Charts Grid */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Threats Over Time */}
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Threats Over Time</h3>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart
-                margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Scatter
-                  name="Flagged Threats"
-                  data={threatData.timeSeriesData}
-                  dataKey="flagged"
-                  fill="#ef4444"
-                />
-                <Scatter
-                  name="Unflagged Threats"
-                  data={threatData.timeSeriesData}
-                  dataKey="unflagged"
-                  fill="#3b82f6"
-                />
-              </ScatterChart>
-            </ResponsiveContainer>
+        {isLoading ? (
+          <ChartSkeleton />
+        ) : (
+          <div className="rounded-lg border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold mb-4">Threats Over Time</h3>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <ScatterChart
+                  margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="time" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Scatter
+                    name="Flagged Threats"
+                    data={data.timeSeriesData}
+                    dataKey="flagged"
+                    fill="#ef4444"
+                  />
+                  <Scatter
+                    name="Unflagged Threats"
+                    data={data.timeSeriesData}
+                    dataKey="unflagged"
+                    fill="#3b82f6"
+                  />
+                </ScatterChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Threat Types */}
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Threat Types</h3>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={threatData.threatTypes}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="type" angle={-45} textAnchor="end" height={100} />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="#6366f1" />
-              </BarChart>
-            </ResponsiveContainer>
+        {isLoading ? (
+          <ChartSkeleton />
+        ) : (
+          <div className="rounded-lg border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold mb-4">Threat Types</h3>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={data.threatTypes}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="type" angle={-45} textAnchor="end" height={100} />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="count" fill="#6366f1" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Detection Rate Trend */}
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Detection Rate Trend</h3>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={threatData.timeSeriesData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="detectionRate"
-                  stroke="#10b981"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+        {isLoading ? (
+          <ChartSkeleton />
+        ) : (
+          <div className="rounded-lg border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold mb-4">Detection Rate Trend</h3>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={data.timeSeriesData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="time" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="detectionRate"
+                    stroke="#10b981"
+                    strokeWidth={2}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Latency Monitoring */}
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Response Latency</h3>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={threatData.timeSeriesData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="latency"
-                  stroke="#8b5cf6"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+        {isLoading ? (
+          <ChartSkeleton />
+        ) : (
+          <div className="rounded-lg border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold mb-4">Response Latency</h3>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={data.timeSeriesData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="time" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="latency"
+                    stroke="#8b5cf6"
+                    strokeWidth={2}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
