@@ -1,17 +1,20 @@
 "use client";
 
-import { Bell, Moon, Sun, User } from "lucide-react";
+import { Moon, Sun, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
+import { useSession, signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 export default function Navbar() {
   const { setTheme, theme } = useTheme();
+  const { data: session } = useSession();
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
@@ -21,12 +24,6 @@ export default function Navbar() {
       </div>
 
       <div className="ml-auto flex items-center gap-4">
-        {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary"></span>
-        </Button>
-
         {/* Theme Switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -50,9 +47,36 @@ export default function Navbar() {
         </DropdownMenu>
 
         {/* User Menu */}
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <User className="h-5 w-5" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="rounded-full">
+              {session?.user?.image ? (
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name || "User"}
+                  width={20}
+                  height={20}
+                  className="rounded-full"
+                />
+              ) : (
+                <User className="h-5 w-5" />
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {session ? (
+              <>
+                <DropdownMenuItem disabled>
+                  {session.user.email}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut()}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </>
+            ) : null}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

@@ -1,6 +1,6 @@
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "@/components/providers";
 import Sidebar from "@/components/sidebar";
 import Navbar from "@/components/navbar";
 
@@ -18,12 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className={fontSans.variable}>
       <body className="bg-background min-h-screen">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           <div className="flex min-h-screen flex-col lg:flex-row">
             <Sidebar />
             <div className="flex flex-1 flex-col">
@@ -31,7 +26,7 @@ export default function RootLayout({ children }) {
               <main className="flex-1 p-4 md:p-6">{children}</main>
             </div>
           </div>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
